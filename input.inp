@@ -1,0 +1,32 @@
+#START_INPUT#
+MESH
+mesh/fem.mesh
+END_MESH
+
+METRIC
+1e0
+END_METRIC
+
+BOUNDARY
+num
+1
+2 fix
+END_BOUNDARY
+
+INITIAL
+num
+1
+parts  E nu
+1      1.0 0.3
+END_INITIAL
+
+SOURCE
+num
+1
+boundary
+n Px Py
+3 0 -1e0
+END_SOURCE
+#END_INPUT#
+
+
