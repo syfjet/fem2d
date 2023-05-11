@@ -44,7 +44,6 @@ void Construction_mesh::cell_connection(Object &obj)
 			}	
 			if (pos == 2)
 			{
-                //Construction_mesh::orientation_cell_cell(cell_massive[j],obj.cell[i].connection,obj.cell[i].index_node,obj.cell[cell_massive[j]].index_node);
                 Construction_mesh::orientation_cell_cell(cell_massive[j],obj.cell[i].connection,obj.cell[i].index_node,obj.cell[cell_massive[j]].index_node);
 			}
 		}
@@ -53,40 +52,49 @@ void Construction_mesh::cell_connection(Object &obj)
 	cout<<"cell_connection end"<<endl;
 }
 
+
+
+
+
+
 void Construction_mesh::orientation_cell_cell(int index,array<int,3> &connection, array<int,3> &index_node, array<int,3> &index_node_contact_cell)
 {
+    auto posit
+    {
+        [](int ind, int &index, int (&pos)[3], array<int,3> &connection,int &flag)
+        {
+            ++pos[ind];
+            if (pos[ind] == 2)
+            {
+                connection[ind] = index;
+                flag = 1;
+            }           
+        }
+    };
+
     int pos[] = {0,0,0};
-	for (int i = 0; i < 2;++i)
-	{
+    int flag = 0;
+    for (int i = 0; i < 3;++i)
+    {
         if (index_node[0] == index_node_contact_cell[i] || index_node[1] == index_node_contact_cell[i])
         {
-            ++pos[0];
-            if (pos[0] == 2)
-            {
-                connection[0] = index;
-                break;
-            }
-        }
-        if (index_node[1] == index_node_contact_cell[i] || index_node[2] == index_node_contact_cell[i])
-        {
-            ++pos[1];
-            if (pos[1] == 2)
-            {
-                connection[1] = index;
-                break;
-            }
+            posit(0,index,pos,connection,flag);
         }
         if (index_node[0] == index_node_contact_cell[i] || index_node[2] == index_node_contact_cell[i])
         {
-            ++pos[2];
-            if (pos[2] == 2)
-            {
-                connection[2] = index;
-                break;
-            }
+            posit(1,index,pos,connection,flag);
         }
-	}
+        if (index_node[1] == index_node_contact_cell[i] || index_node[2] == index_node_contact_cell[i])
+        {
+            posit(2,index,pos,connection,flag);
+        }
+        if (flag == 1){break;}
+    }
 }
+
+
+
+
 
 void Construction_mesh::bound_construct(Object &obj)
 {
