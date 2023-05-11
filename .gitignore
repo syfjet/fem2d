@@ -1,0 +1,8 @@
+src/paraview/*.o
+src/reader/*.o
+src/solver/*.o
+src/*.o
+mesh/
+fem
+results/
+pic/
