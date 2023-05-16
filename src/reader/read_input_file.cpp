@@ -166,7 +166,7 @@ void Read_input_file::boundary_init(Object &obj,vector <int>& number,vector <str
 				{
 					obj.segment[i].type = 1;
 				}
-				else if (type_boundary[j] == "fix_u")
+				else if (type_boundary[j] == "fix_x")
 				{
 					obj.segment[i].type = 2;				
 				}
@@ -174,10 +174,10 @@ void Read_input_file::boundary_init(Object &obj,vector <int>& number,vector <str
 				{
 					obj.segment[i].type = 3;
 				}
-				else
-				{
-					obj.segment[i].type = 0; 
-				}
+				// else
+				// {
+				// 	obj.segment[i].type = 0; 
+				// }
 		 		break;	
  			}
  		}

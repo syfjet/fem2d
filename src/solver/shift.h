@@ -18,8 +18,6 @@ class Shift: Geometry, virtual Linalg
 		
 		void hooke(int i,Object &obj);
 		vector<double> B_matrix;
-		
-
 	private:
 }; 
 

@@ -23,12 +23,20 @@ void Shift::define_matrix(Object &obj)
     array<array<double,3>,6> B_matrix_T;    
     array<array<double,3>,6> temp_local_K_matrix;
     array<array<double,6>,6> local_K_matrix;
-    int i0,i1,i2,i3,i4,i5;
 
-    vector<double> vec(2*obj.node.size()); 
+ 
+    vector<double> temp_index(obj.node.size());
+    vector<double> temp_ux1(obj.node.size());
+    vector<double> temp_uy1(obj.node.size());
+    vector<double> temp_ux2(obj.node.size());
+    vector<double> temp_uy2(obj.node.size());
+
+    
+    Linalg::K_rigid_sparse K_rigid_;
+ 
     for (int i = 0; i < 2*obj.node.size(); ++i)
     {
-        Linalg::K_rigid.push_back(vec);  
+        Linalg::k_rigid.push_back(K_rigid_);
     }
 
     for (int i = 0; i < obj.cell.size(); ++i)
@@ -44,16 +52,17 @@ void Shift::define_matrix(Object &obj)
                 B_matrix_T[k][j] = obj.cell[i].B_matrix[j][k];
             }
         }
-
+        double temp;
         for (int k = 0; k < temp_local_K_matrix.size(); ++k)
         {
             for (int j = 0; j < temp_local_K_matrix[0].size(); ++j)
             {   
-                temp_local_K_matrix[k][j] = 0;
+                temp = 0;
                 for (int l = 0; l < B_matrix_T[0].size(); ++l)
                 {
-                    temp_local_K_matrix[k][j] += B_matrix_T[k][l]*Shift::hooke_matrix[l][j];
+                    temp += B_matrix_T[k][l]*Shift::hooke_matrix[l][j];
                 }   
+                temp_local_K_matrix[k][j] = temp;
             }
         }
 
@@ -61,28 +70,87 @@ void Shift::define_matrix(Object &obj)
         {
             for (int j = 0; j < local_K_matrix[0].size(); ++j)
             {   
-                local_K_matrix[k][j] = 0;
+                temp = 0;
                 for (int l = 0; l < temp_local_K_matrix[0].size(); ++l)
                 {
-                    local_K_matrix[k][j] += temp_local_K_matrix[k][l]*obj.cell[i].B_matrix[l][j]; 
+                    temp += temp_local_K_matrix[k][l]*obj.cell[i].B_matrix[l][j]; 
                 }
+                obj.cell[i].local_K_matrix[k][j] = temp*obj.cell[i].area;
             }
         } 
+    }
 
-        i0 = 2*obj.cell[i].index_node[0];
-        i1 = i0+1;
-        i2 = 2*obj.cell[i].index_node[1];
-        i3 = i2+1;
-        i4 = 2*obj.cell[i].index_node[2]; 
-        i5 = i4+1;
-        array<int,6> ind = {i0,i1,i2,i3,i4,i5};
-        
-        for (int k = 0; k < local_K_matrix.size(); ++k)
+    for (int i = 0; i < obj.node.size(); ++i)
+    {
+
+        for (int j = 0; j < obj.node.size(); ++j)
         {
-            for (int j = 0; j < local_K_matrix.size(); ++j)
-            {
-                Linalg::K_rigid[ind[k]][ind[j]] += local_K_matrix[k][j]*obj.cell[i].area;
+            temp_index[j] = 0;
+        }
+     
+        for (int j = 0; j < obj.node.size(); ++j)
+        {
+            temp_ux1[j] = 0;
+            temp_uy1[j] = 0;
+            temp_ux2[j] = 0;
+            temp_uy2[j] = 0;        
+        }
+     
+        int i_c,i_n,l;
+        for (int j = 0; j < obj.node[i].connection.size(); ++j)
+        {   
+            i_c = obj.node[i].connection[j];
+
+            for (int k = 0; k < obj.cell[i_c].index_node.size(); ++k)
+            {   
+                i_n = obj.cell[i_c].index_node[k];
+                
+                if (i == i_n)
+                {
+                    l = 2*k;
+                }
+            }    
+            for (int k = 0; k < obj.cell[i_c].index_node.size(); ++k)
+            {   
+                i_n = obj.cell[i_c].index_node[k];
+                temp_index[i_n] = 1; 
+
+                temp_ux1[i_n] +=  obj.cell[i_c].local_K_matrix[l][2*k];   
+                temp_uy1[i_n] +=  obj.cell[i_c].local_K_matrix[l][2*k+1];
+                temp_ux2[i_n] +=  obj.cell[i_c].local_K_matrix[l+1][2*k];   
+                temp_uy2[i_n] +=  obj.cell[i_c].local_K_matrix[l+1][2*k+1];                
             }
         }
+
+        for (int j = 0; j < obj.node.size(); ++j)
+        {   
+            if (temp_index[j] > 0)
+            {
+                Linalg::k_rigid[2*i].index.push_back(2*j);
+                Linalg::k_rigid[2*i].index.push_back(2*j+1);
+                Linalg::k_rigid[2*i].element.push_back(temp_ux1[j]);
+                Linalg::k_rigid[2*i].element.push_back(temp_uy1[j]);
+
+                Linalg::k_rigid[2*i+1].index.push_back(2*j);
+                Linalg::k_rigid[2*i+1].index.push_back(2*j+1);
+                Linalg::k_rigid[2*i+1].element.push_back(temp_ux2[j]);
+                Linalg::k_rigid[2*i+1].element.push_back(temp_uy2[j]);
+            }
+
+            //This step for individual nodes not includes in the mesh
+            if ((temp_index[i] == 0) && (i==j))
+            {
+                Linalg::k_rigid[2*i].index.push_back(2*j);
+                Linalg::k_rigid[2*i].index.push_back(2*j+1);
+                Linalg::k_rigid[2*i].element.push_back(0.0);
+                Linalg::k_rigid[2*i].element.push_back(0.0);
+                Linalg::k_rigid[2*i+1].index.push_back(2*j);
+                Linalg::k_rigid[2*i+1].index.push_back(2*j+1);
+                Linalg::k_rigid[2*i+1].element.push_back(0.0); 
+                Linalg::k_rigid[2*i+1].element.push_back(0.0);                 
+            }            
+        }
     }  
+
+
 };

@@ -1,7 +1,9 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <cmath>
 #include "boundary.h"
+
 #include "../object.h"
 
 using namespace std; 
@@ -12,7 +14,12 @@ class Linalg: Boundary
 		~Linalg();
 	protected:
 		void solve_linear_system(Object &obj);
-		vector<vector<double>> K_rigid;
+		class K_rigid_sparse
+		{	public:
+			vector<int> index;
+			vector<double> element; 
+		};
+		vector<K_rigid_sparse> k_rigid;
 	private:
 		void update_K_rigid(vector<double> &U);
 }; 

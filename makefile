@@ -1,7 +1,7 @@
 TARGET = fem
 CC = g++
 
-CFLAGS = -Ofast
+CFLAGS = -O3
 
 SOURCES = \
 src/main.cpp \
