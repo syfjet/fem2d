@@ -28,4 +28,4 @@ Curve Loop(1) = {2, 5, 3, -4, -1};
 
 Plane Surface(1) = {1};
 //+
-Transfinite Curve {5, 3, 2, 1, 4} = 3 Using Progression 1;
+Transfinite Curve {5, 3, 2, 1, 4} = 10 Using Progression 1;

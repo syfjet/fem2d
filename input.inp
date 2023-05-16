@@ -10,7 +10,7 @@ END_METRIC
 BOUNDARY
 num
 1
-4 fix_x
+2 fix
 END_BOUNDARY
 
 INITIAL
@@ -23,13 +23,14 @@ END_INITIAL
 SOURCE
 num
 1
-boundary
-n Px Py
-2 50.0 0
+point
+n n Px Py
+1. 1. 0 -50
 END_SOURCE
 #END_INPUT#
 
-point
-n n Px Py
-0. 0.5 0.0 0
 
+
+boundary
+n Px Py
+2 50.0 0
