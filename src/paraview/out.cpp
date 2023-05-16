@@ -150,7 +150,7 @@ void Out::out_paraview(Object &obj)
             out << "</VTKFile>"<<"\n";                  
         }
         out.close();
-        out.open("results/results_.vtu");
+        out.open("results/results_move.vtu");
         if (out.is_open())
         {
             out << "<VTKFile type='UnstructuredGrid' version='0.1' byte_order='BigEndian'>"<<"\n";
@@ -165,36 +165,6 @@ void Out::out_paraview(Object &obj)
             }
             out << "</DataArray>"<<"\n";
             out << "</Points>"<<"\n";
-
-
-            out << "<PointData Vectors='Velocity'>"<<"\n";
-            out << "<DataArray type='Float64' Name='Ux' Format='ascii'>"<<"\n";
- 
-            for (int i = 0;i<obj.node.size();++i)
-            {
-                out << obj.node[i].ux<<"\n";
-            }
-            out << "</DataArray>"<<"\n";
-
-            out << "<DataArray type='Float64' Name='Uy' Format='ascii'>"<<"\n";
- 
-            for (int i = 0;i<obj.node.size();++i)
-            {
-                out << obj.node[i].uy<<"\n";
-            }
-            out << "</DataArray>"<<"\n";
-
-
-            out << "<DataArray type='Float64' Name='U' Format='ascii'>"<<"\n";
- 
-            for (int i = 0;i<obj.node.size();++i)
-            {
-                out << sqrt(pow(obj.node[i].ux,2)+pow(obj.node[i].uy,2))<<"\n";
-            }
-            out << "</DataArray>"<<"\n";
-            out << "</PointData>"<<"\n";
- 
-
 
             out << "<CellData Scalars='scalars'>"<<"\n";
 
