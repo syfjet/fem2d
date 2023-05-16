@@ -133,12 +133,17 @@ void Read_input_file::read(string input_file,Object &obj, Numerical &numer)
 
 							for (int i = 0; i < obj.segment.size(); ++i)
 							{
+								double xx,yy;
+								xx = obj.node[obj.segment[i].index_node[0]].coordinate[0]-obj.node[obj.segment[i].index_node[1]].coordinate[0];
+						        yy = obj.node[obj.segment[i].index_node[0]].coordinate[1]-obj.node[obj.segment[i].index_node[1]].coordinate[1];
+						        obj.segment[i].lenght = sqrt(pow(xx,2)+pow(yy,2));		
+						        						
 	  							if (obj.segment[i].part == part)
 	  							{
-									obj.node[obj.segment[i].index_node[0]].px = px;
-									obj.node[obj.segment[i].index_node[0]].py = py;
-									obj.node[obj.segment[i].index_node[1]].px = px;
-									obj.node[obj.segment[i].index_node[1]].py = py;
+									obj.node[obj.segment[i].index_node[0]].px += px*0.5*obj.segment[i].lenght;
+									obj.node[obj.segment[i].index_node[0]].py += py*0.5*obj.segment[i].lenght;
+									obj.node[obj.segment[i].index_node[1]].px += px*0.5*obj.segment[i].lenght;
+									obj.node[obj.segment[i].index_node[1]].py += py*0.5*obj.segment[i].lenght;
 	  							}
 							}	
 						}

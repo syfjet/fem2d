@@ -29,6 +29,7 @@ public:
 		int part = 0;
 		array<int,2> index_node;	
 		int type = 0;
+		double lenght;
 	protected:
 	private:					
 	};  
