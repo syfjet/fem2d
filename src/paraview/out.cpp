@@ -129,20 +129,24 @@ void Out::out_paraview(Object &obj)
             out << "<DataArray type='Int32' Name='connectivity' format='ascii'>"<<"\n";     
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].index_node[0]<< " "<< obj.cell[i].index_node[1]<< " " << obj.cell[i].index_node[2] <<"\n";
+                for (int j = 0;j < obj.cell[i].index_node.size();++j)
+                {
+                    out << obj.cell[i].index_node[j] << " ";
+                    out<<"\n";
+                } 
             }   
             out << "</DataArray>"<<"\n";
             out << "<DataArray type='Int32' Name='offsets' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << 3*(i+1) <<"\n";
+                out << 4*(i+1) <<"\n";
             }   
             out << "</DataArray>"<<"\n";
             out << "<DataArray type='Int32' Name='types' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << 5 <<"\n";
-            }   
+                out << 9 <<"\n";
+            }     
             out << "</DataArray>"<<"\n";    
             out << "</Cells>"<<"\n";
             out << "</Piece>"<<"\n";
@@ -241,19 +245,23 @@ void Out::out_paraview(Object &obj)
             out << "<DataArray type='Int32' Name='connectivity' format='ascii'>"<<"\n";     
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].index_node[0]<< " "<< obj.cell[i].index_node[1]<< " " << obj.cell[i].index_node[2] <<"\n";
+                for (int j = 0;j < obj.cell[i].index_node.size();++j)
+                {
+                    out << obj.cell[i].index_node[j] << " ";
+                    out <<"\n";
+                }
             }   
             out << "</DataArray>"<<"\n";
             out << "<DataArray type='Int32' Name='offsets' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << 3*(i+1) <<"\n";
+                out << 4*(i+1) <<"\n";
             }   
             out << "</DataArray>"<<"\n";
             out << "<DataArray type='Int32' Name='types' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << 5 <<"\n";
+                out << 9 <<"\n";
             }   
             out << "</DataArray>"<<"\n";    
             out << "</Cells>"<<"\n";

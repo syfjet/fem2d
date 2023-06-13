@@ -238,7 +238,6 @@ void Read_input_file::read_mesh(Object &obj)
 				for (int i = 0; i < n_node; ++i)
 				{
 					obj.node.push_back(node_);
-					obj.node[i].n_node = n_node;
 					for (int j = 0; j < obj.node[i].coordinate.size()+1; ++j)
 					{	
 						in >> _node;
@@ -257,7 +256,6 @@ void Read_input_file::read_mesh(Object &obj)
 				for (int i = 0; i < n_segment; ++i)
  				{
  			 		obj.segment.push_back(segment_);
- 			 		obj.segment[i].n_segment = n_segment;
  					for (int j = 0; j < obj.segment[i].index_node.size()+1; ++j)
  					{	
  					 	in >> _segment;
@@ -268,7 +266,7 @@ void Read_input_file::read_mesh(Object &obj)
 				cout<<"Edges end"<<endl;
 			}
 
-			if (regex_replace(line, regex(" "), "")  == "Triangles")
+			if (regex_replace(line, regex(" "), "")  == "Quadrilaterals")
 			{	
 				Object::Cell cell_;
 				in >> n_cell;	
@@ -276,8 +274,6 @@ void Read_input_file::read_mesh(Object &obj)
 				for (int i = 0; i < n_cell; ++i)
  				{	
  					obj.cell.push_back(cell_);
- 					obj.cell[i].n_cell = n_cell;
- 					 					
  					for (int j = 0; j < obj.cell[i].index_node.size()+1; ++j)
  					{	
  					 	in >> _cell;

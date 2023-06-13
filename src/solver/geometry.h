@@ -14,8 +14,8 @@ class Geometry
 		void geometry_area(int i, Object &obj);
 		void geometry_b_matrix(int i, Object &obj);
 	private:
-		array<double,3> B = {0,0,0};
-    	array<double,3> C = {0,0,0};	
+		array<double,4> B = {0,0,0,0};
+    	array<double,4> C = {0,0,0,0};	
 }; 
 
  

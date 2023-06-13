@@ -20,11 +20,11 @@ void Shift::hooke(int i,Object &obj)
 
 void Shift::define_matrix(Object &obj)
 {
-    array<array<double,3>,6> B_matrix_T;    
-    array<array<double,3>,6> temp_local_K_matrix;
-    array<array<double,6>,6> local_K_matrix;
+    array<array<double,3>,8> B_matrix_T;    
+    array<array<double,3>,8> temp_local_K_matrix;
+    array<array<double,8>,8> local_K_matrix;
 
- 
+
     vector<double> temp_index(obj.node.size());
     vector<double> temp_ux1(obj.node.size());
     vector<double> temp_uy1(obj.node.size());
@@ -138,7 +138,7 @@ void Shift::define_matrix(Object &obj)
             }
 
             //This step for individual nodes not includes in the mesh
-            if ((temp_index[i] == 0) && (i==j))
+            if ((temp_index[i] == 0) && (i == j))
             {
                 Linalg::k_rigid[2*i].index.push_back(2*j);
                 Linalg::k_rigid[2*i].index.push_back(2*j+1);

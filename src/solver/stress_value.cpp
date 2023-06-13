@@ -15,12 +15,13 @@ void Stress_value::define_stress_values(Object &obj)
 void Stress_value::epsilon(int i,Object &obj)
 {
 
-    array<int,3> ii;
-    array<double,6> U;
+    array<int,4> ii;
+    array<double,8> U;
 
     ii[0] = obj.cell[i].index_node[0];
     ii[1] = obj.cell[i].index_node[1];
     ii[2] = obj.cell[i].index_node[2];
+    ii[3] = obj.cell[i].index_node[3];
 
     U[0] = obj.node[ii[0]].ux;
     U[1] = obj.node[ii[0]].uy;
@@ -28,6 +29,8 @@ void Stress_value::epsilon(int i,Object &obj)
     U[3] = obj.node[ii[1]].uy;
     U[4] = obj.node[ii[2]].ux;
     U[5] = obj.node[ii[2]].uy;
+    U[6] = obj.node[ii[3]].ux;
+    U[7] = obj.node[ii[3]].uy;
 
     for (int j = 0; j < U.size(); ++j)
     {
