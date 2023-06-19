@@ -15,9 +15,7 @@ class Shift: Geometry, virtual Linalg
 		void define_matrix(Object &obj); 
 		vector<vector<double>> hooke_matrix = {{0,0,0},{0,0,0},{0,0,0}};
 	protected:
-		
 		void hooke(int i,Object &obj);
-		vector<double> B_matrix;
 	private:
 }; 
 

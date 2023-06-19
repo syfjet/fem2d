@@ -42,9 +42,7 @@ public:
 		double E = 0;
 		double nu = 0;
 		double area = 0;
-		array<array<double,8>,3> B_matrix = {{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}}};  
-		array<array<double,8>,8> local_K_matrix = {{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}}};
-
+		array<array<double,8>,3> B_matrix;  
 		array<double,3> epsilon = {0,0,0};
 		array<double,3> stress = {0,0,0};
 		double full_stress = 0;

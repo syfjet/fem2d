@@ -19,12 +19,15 @@ void Shift::hooke(int i,Object &obj)
 
 
 void Shift::define_matrix(Object &obj)
-{
+{   
+    array<array<double,8>,3> B_matrix;
     array<array<double,3>,8> B_matrix_T;    
     array<array<double,3>,8> temp_local_K_matrix;
-    array<array<double,8>,8> local_K_matrix;
 
+ 
 
+    vector<vector<vector<double>>> local_K_matrix(obj.cell.size(), vector<vector<double>>(8, vector<double>(8, 0)));
+        
     vector<double> temp_index(obj.node.size());
     vector<double> temp_ux1(obj.node.size());
     vector<double> temp_uy1(obj.node.size());
@@ -44,7 +47,8 @@ void Shift::define_matrix(Object &obj)
         Geometry::geometry_area(i, obj);
         Geometry::geometry_b_matrix(i, obj);
         Shift::hooke(i,obj);
- 
+        
+
         for (int k = 0; k < B_matrix_T.size(); ++k)
         {
             for (int j = 0; j < B_matrix_T[0].size(); ++j)
@@ -66,16 +70,16 @@ void Shift::define_matrix(Object &obj)
             }
         }
 
-        for (int k = 0; k < local_K_matrix.size(); ++k)
+        for (int k = 0; k < local_K_matrix[i].size(); ++k)
         {
-            for (int j = 0; j < local_K_matrix[0].size(); ++j)
+            for (int j = 0; j < local_K_matrix[i][0].size(); ++j)
             {   
                 temp = 0;
                 for (int l = 0; l < temp_local_K_matrix[0].size(); ++l)
                 {
                     temp += temp_local_K_matrix[k][l]*obj.cell[i].B_matrix[l][j]; 
                 }
-                obj.cell[i].local_K_matrix[k][j] = temp*obj.cell[i].area;
+                local_K_matrix[i][k][j] = temp*obj.cell[i].area;
             }
         } 
     }
@@ -86,10 +90,6 @@ void Shift::define_matrix(Object &obj)
         for (int j = 0; j < obj.node.size(); ++j)
         {
             temp_index[j] = 0;
-        }
-     
-        for (int j = 0; j < obj.node.size(); ++j)
-        {
             temp_ux1[j] = 0;
             temp_uy1[j] = 0;
             temp_ux2[j] = 0;
@@ -115,10 +115,10 @@ void Shift::define_matrix(Object &obj)
                 i_n = obj.cell[i_c].index_node[k];
                 temp_index[i_n] = 1; 
 
-                temp_ux1[i_n] +=  obj.cell[i_c].local_K_matrix[l][2*k];   
-                temp_uy1[i_n] +=  obj.cell[i_c].local_K_matrix[l][2*k+1];
-                temp_ux2[i_n] +=  obj.cell[i_c].local_K_matrix[l+1][2*k];   
-                temp_uy2[i_n] +=  obj.cell[i_c].local_K_matrix[l+1][2*k+1];                
+                temp_ux1[i_n] +=  local_K_matrix[i_c][l][2*k];   
+                temp_uy1[i_n] +=  local_K_matrix[i_c][l][2*k+1];
+                temp_ux2[i_n] +=  local_K_matrix[i_c][l+1][2*k];   
+                temp_uy2[i_n] +=  local_K_matrix[i_c][l+1][2*k+1];                
             }
         }
 
