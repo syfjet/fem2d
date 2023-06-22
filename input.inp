@@ -23,11 +23,14 @@ END_INITIAL
 SOURCE
 num
 1
-point
-x y Px Py
-1. 1. 0 -10
+boundary
+n Fx Fy
+3 0 -50
 END_SOURCE
 #END_INPUT#
 
-
+#may be replace in source
+point
+x y Fx Fy
+1. 1. -10 10
 
