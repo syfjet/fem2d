@@ -103,11 +103,11 @@ void Read_input_file::read(string input_file,Object &obj, Numerical &numer)
 
 						if (regex_replace(text, regex(" "), "") == "point")
 						{	
-							double x0 = 0, y0 = 0, px = 0, py = 0;
+							double x0 = 0, y0 = 0, fx = 0, fy = 0;
 							double min_ = 1e20, d = 0;
 							int index;
 							in >> text >> text >> text >> text;
-							in >> x0 >> y0 >> px >> py;
+							in >> x0 >> y0 >> fx >> fy;
  
 							for (int i = 0; i < obj.node.size(); ++i)
 							{
@@ -119,31 +119,31 @@ void Read_input_file::read(string input_file,Object &obj, Numerical &numer)
 								}
 							}
 							cout<<"Index "<<index<<" "<<obj.node[index].coordinate[0]<<" "<<obj.node[index].coordinate[1]<< endl;	
-							obj.node[index].px = px;
-							obj.node[index].py = py;							
+							obj.node[index].fx = fx;
+							obj.node[index].fy = fy;							
 						}
 						if (regex_replace(text, regex(" "), "") == "boundary")
 						{
  
-							double px = 0, py = 0;
+							double fx = 0, fy = 0;
 							int part = 0;
 
 							in >> text >> text >> text;
-							in >> part >> px >> py;
+							in >> part >> fx >> fy;
 
 							for (int i = 0; i < obj.segment.size(); ++i)
 							{
 								double xx,yy;
 								xx = obj.node[obj.segment[i].index_node[0]].coordinate[0]-obj.node[obj.segment[i].index_node[1]].coordinate[0];
 						        yy = obj.node[obj.segment[i].index_node[0]].coordinate[1]-obj.node[obj.segment[i].index_node[1]].coordinate[1];
-						        obj.segment[i].lenght = sqrt(pow(xx,2)+pow(yy,2));		
+						        obj.segment[i].area = sqrt(pow(xx,2)+pow(yy,2));		
 						        						
 	  							if (obj.segment[i].part == part)
 	  							{
-									obj.node[obj.segment[i].index_node[0]].px += px*0.5*obj.segment[i].lenght;
-									obj.node[obj.segment[i].index_node[0]].py += py*0.5*obj.segment[i].lenght;
-									obj.node[obj.segment[i].index_node[1]].px += px*0.5*obj.segment[i].lenght;
-									obj.node[obj.segment[i].index_node[1]].py += py*0.5*obj.segment[i].lenght;
+									obj.node[obj.segment[i].index_node[0]].fx += fx*0.5*obj.segment[i].area;
+									obj.node[obj.segment[i].index_node[0]].fy += fy*0.5*obj.segment[i].area;
+									obj.node[obj.segment[i].index_node[1]].fx += fx*0.5*obj.segment[i].area;
+									obj.node[obj.segment[i].index_node[1]].fy += fy*0.5*obj.segment[i].area;
 	  							}
 							}	
 						}
@@ -266,7 +266,7 @@ void Read_input_file::read_mesh(Object &obj)
 				cout<<"Edges end"<<endl;
 			}
 
-			if (regex_replace(line, regex(" "), "")  == "Quadrilaterals")
+			if (regex_replace(line, regex(" "), "")  == "Triangles")
 			{	
 				Object::Cell cell_;
 				in >> n_cell;	

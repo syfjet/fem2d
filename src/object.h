@@ -12,8 +12,8 @@ public:
 		int part = 0;
 		array<double,3> coordinate = {0,0,0};	
 		vector<int> connection;	
-		double px = 0;
-		double py = 0;
+		double fx = 0;
+		double fy = 0;
 		double ux = 0;
 		double uy = 0;		
 	protected:
@@ -27,7 +27,7 @@ public:
 		int part = 0;
 		array<int,2> index_node;	
 		int type = 0;
-		double lenght;
+		double area;
 	protected:
 	private:					
 	};  
@@ -36,13 +36,13 @@ public:
 	{
 	public:
 		int part = 0;
-		array<int,4> index_node;	
-		array<int,4> connection = {-1,-1,-1,-1};
+		array<int,3> index_node;	
+		array<int,3> connection = {-1,-1,-1};
 
 		double E = 0;
 		double nu = 0;
-		double area = 0;
-		array<array<double,8>,3> B_matrix;  
+		double volume = 0;
+		array<array<double,6>,3> B_matrix  = {{{0}}};  
 		array<double,3> epsilon = {0,0,0};
 		array<double,3> stress = {0,0,0};
 		double full_stress = 0;

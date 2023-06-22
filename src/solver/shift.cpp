@@ -20,13 +20,11 @@ void Shift::hooke(int i,Object &obj)
 
 void Shift::define_matrix(Object &obj)
 {   
-    array<array<double,8>,3> B_matrix;
-    array<array<double,3>,8> B_matrix_T;    
-    array<array<double,3>,8> temp_local_K_matrix;
+    array<array<double,3>,6> B_matrix_T;    
+    array<array<double,3>,6> temp_local_K_matrix;
 
  
-
-    vector<vector<vector<double>>> local_K_matrix(obj.cell.size(), vector<vector<double>>(8, vector<double>(8, 0)));
+    vector<vector<vector<double>>> local_K_matrix(obj.cell.size(), vector<vector<double>>(6, vector<double>(6,0)));
         
     vector<double> temp_index(obj.node.size());
     vector<double> temp_ux1(obj.node.size());
@@ -44,7 +42,7 @@ void Shift::define_matrix(Object &obj)
 
     for (int i = 0; i < obj.cell.size(); ++i)
     {
-        Geometry::geometry_area(i, obj);
+        Geometry::geometry_volume(i, obj);
         Geometry::geometry_b_matrix(i, obj);
         Shift::hooke(i,obj);
         
@@ -79,7 +77,7 @@ void Shift::define_matrix(Object &obj)
                 {
                     temp += temp_local_K_matrix[k][l]*obj.cell[i].B_matrix[l][j]; 
                 }
-                local_K_matrix[i][k][j] = temp*obj.cell[i].area;
+                local_K_matrix[i][k][j] = temp*obj.cell[i].volume;
             }
         } 
     }

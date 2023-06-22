@@ -23,13 +23,11 @@ END_INITIAL
 SOURCE
 num
 1
-boundary
-n Px Py
-3 0 -50
+point
+x y Px Py
+1. 1. 0 -10
 END_SOURCE
 #END_INPUT#
 
-point
-n n Px Py
-1. 1. -10 10
+
 

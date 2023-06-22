@@ -115,10 +115,10 @@ void Out::out_paraview(Object &obj)
             out << "</DataArray>"<<"\n";
  
 
-            out << "<DataArray type='Float64' Name='area' format='ascii'>"<<"\n";
+            out << "<DataArray type='Float64' Name='volume' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].area<<"\n";
+                out << obj.cell[i].volume<<"\n";
             }   
             out << "</DataArray>"<<"\n";
 
@@ -139,13 +139,13 @@ void Out::out_paraview(Object &obj)
             out << "<DataArray type='Int32' Name='offsets' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << 4*(i+1) <<"\n";
+                out << 3*(i+1) <<"\n";
             }   
             out << "</DataArray>"<<"\n";
             out << "<DataArray type='Int32' Name='types' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << 9 <<"\n";
+                out << 5 <<"\n";
             }     
             out << "</DataArray>"<<"\n";    
             out << "</Cells>"<<"\n";
@@ -231,10 +231,10 @@ void Out::out_paraview(Object &obj)
             out << "</DataArray>"<<"\n";
  
 
-            out << "<DataArray type='Float64' Name='area' format='ascii'>"<<"\n";
+            out << "<DataArray type='Float64' Name='volume' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].area<<"\n";
+                out << obj.cell[i].volume<<"\n";
             }   
             out << "</DataArray>"<<"\n";
 
@@ -255,13 +255,13 @@ void Out::out_paraview(Object &obj)
             out << "<DataArray type='Int32' Name='offsets' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << 4*(i+1) <<"\n";
+                out << 3*(i+1) <<"\n";
             }   
             out << "</DataArray>"<<"\n";
             out << "<DataArray type='Int32' Name='types' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << 9 <<"\n";
+                out << 5 <<"\n";
             }   
             out << "</DataArray>"<<"\n";    
             out << "</Cells>"<<"\n";

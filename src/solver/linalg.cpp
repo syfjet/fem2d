@@ -17,7 +17,6 @@ void Linalg::update_K_rigid(vector<double> &U)
                     Linalg::k_rigid[i].element[j] = 1;
                 }                   
             }
-
             for (int k = 0; k < Linalg::k_rigid.size(); ++k)
             {   
                 for (int j = 0; j < Linalg::k_rigid[k].index.size(); ++j)
@@ -50,8 +49,8 @@ void Linalg::solve_linear_system(Object &obj)
 
     for (int i = 0; i < obj.node.size(); ++i)
     {  
-       U[2*i] = obj.node[i].px; 
-       U[2*i+1] = obj.node[i].py;     
+       U[2*i] = obj.node[i].fx; 
+       U[2*i+1] = obj.node[i].fy;     
     }
 
     for (int i = 0; i< Linalg::k_rigid.size(); ++i)
@@ -113,12 +112,13 @@ void Linalg::solve_linear_system(Object &obj)
                 s[i] = r[i]+beta*s[i];  
             }     
         }
+        cout<<"iter step = "<<k<<endl;
 
-        if (k > 9999)
+        if (k >= 9999)
         {
             cout<<"Not stable solution!"<<endl;
         }
-        cout<<"iter step = "<<k<<endl;
+
     }
 
     for (int i = 0; i < obj.node.size(); ++i)
@@ -132,105 +132,116 @@ void Linalg::solve_linear_system(Object &obj)
 //Exact Linear solver Gauss
 ////////////////////////////
 
-    // double divider;
-    // double factor;
-    // for (int i = 0; i < Linalg::k_rigid.size(); ++i)
-    // {     
-        
+        // vector<double> STROK_f;
+        // vector<double> STROK_s;
+        // STROK_f.resize(Linalg::k_rigid.size(),0); 
+        // STROK_s.resize(Linalg::k_rigid.size(),0);        
 
-    //    // if (Linalg::k_rigid[i].element[0]!=0)
-    //     //{
+        // double divider;
+        // double factor;
+        // for (int i = 0; i < Linalg::k_rigid.size(); ++i)
+        // {     
 
-    //         // STROK_f.clear();
-    //         // STROK_f.resize(Linalg::k_rigid.size(),0);           
-    //         for (int l = 0; l < Linalg::k_rigid.size(); ++l)
-    //         {
-    //            STROK_f[l] = 0; 
-    //         }
 
-            
-    //         for (int l = 0; l < Linalg::k_rigid[i].index.size(); ++l)
-    //         {
-    //            STROK_f[Linalg::k_rigid[i].index[l]] = Linalg::k_rigid[i].element[l]; 
-    //         }
+        //    if (Linalg::k_rigid[i].element[0]!=0)
+        //     {
 
-    //         divider = STROK_f[i];
+        //         STROK_f.clear();
+        //         STROK_f.resize(Linalg::k_rigid.size(),0);           
+        //         for (int l = 0; l < Linalg::k_rigid.size(); ++l)
+        //         {
+        //            STROK_f[l] = 0; 
+        //         }
 
-    //         for (int j = 0; j < Linalg::k_rigid.size(); ++j)
-    //         {
-    //            STROK_f[j] /= divider; 
-    //         }
-    //         U[i] /= divider;
-    //         for (int j = i+1; j < Linalg::k_rigid.size(); ++j)
-    //         {   
- 
-    //            for (int l = 0; l < Linalg::k_rigid.size(); ++l)
-    //             {
-    //                STROK_s[l] = 0; 
-    //             }
-    //             for (int l = 0; l < Linalg::k_rigid[j].index.size(); ++l)
-    //             {
-    //                STROK_s[Linalg::k_rigid[j].index[l]] = Linalg::k_rigid[j].element[l]; 
-    //             }               
-    //             if (STROK_s[j]!=0)
-    //             {
+                
+        //         for (int l = 0; l < Linalg::k_rigid[i].index.size(); ++l)
+        //         {
+        //            STROK_f[Linalg::k_rigid[i].index[l]] = Linalg::k_rigid[i].element[l]; 
+        //         }
 
-  
+        //         divider = STROK_f[i];
+        //         if (divider != 0)
+        //         {
+        //             for (int j = 0; j < Linalg::k_rigid.size(); ++j)
+        //             {
+                    
+        //                STROK_f[j] /= divider; 
+        //             }
+        //             U[i] /= divider;
+        //             for (int j = i+1; j < Linalg::k_rigid.size(); ++j)
+        //             {   
+         
+        //                 for (int l = 0; l < Linalg::k_rigid.size(); ++l)
+        //                 {
+        //                    STROK_s[l] = 0; 
+        //                 }
+        //                 for (int l = 0; l < Linalg::k_rigid[j].index.size(); ++l)
+        //                 {
+        //                    STROK_s[Linalg::k_rigid[j].index[l]] = Linalg::k_rigid[j].element[l]; 
+        //                 }               
+        //                 if (STROK_s[j]!=0)
+        //                 {
 
-    //                 factor = STROK_s[i];
-    //                 for (int k = i; k < Linalg::k_rigid.size(); ++k)
-    //                 {   
-    //                     if (STROK_f[k]!=0)
-    //                     {
-    //                         STROK_s[k]-= factor*STROK_f[k];        
-    //                     }
-                        
-    //                 }
-    //                 STROK_s[i] = 0;
-    //                 U[j] -= factor*U[i]; 
-    //                 Linalg::k_rigid[j].index.clear();
-    //                 Linalg::k_rigid[j].element.clear();
-    //                 for (int l = 0; l < Linalg::k_rigid.size(); ++l)
-    //                 {
-    //                     if (STROK_s[l]!=0)
-    //                     {
-    //                         Linalg::k_rigid[j].index.push_back(l);
-    //                         Linalg::k_rigid[j].element.push_back(STROK_s[l]);
-    //                     } 
-    //                 }
-    //             }            
+        //                     factor = STROK_s[i];
+        //                     for (int k = i; k < Linalg::k_rigid.size(); ++k)
+        //                     {   
+        //                         if (STROK_f[k] != 0)
+        //                         {
+        //                             STROK_s[k]-= factor*STROK_f[k];        
+        //                         }
+                                
+        //                     }
+        //                     STROK_s[i] = 0;
+        //                     U[j] -= factor*U[i]; 
+        //                     Linalg::k_rigid[j].index.clear();
+        //                     Linalg::k_rigid[j].element.clear();
+        //                     for (int l = 0; l < Linalg::k_rigid.size(); ++l)
+        //                     {
+        //                         if (STROK_s[l] != 0)
+        //                         {
+        //                             Linalg::k_rigid[j].index.push_back(l);
+        //                             Linalg::k_rigid[j].element.push_back(STROK_s[l]);
+        //                         } 
+        //                     }
+        //                 }            
+        //             } 
+        //         }
 
-    //         } 
+        //         Linalg::k_rigid[i].index.clear();
+        //         Linalg::k_rigid[i].element.clear();
+        //         for (int l = 0; l < Linalg::k_rigid.size(); ++l)
+        //         {
+        //             if (STROK_f[l]!=0)
+        //             {
+        //                 Linalg::k_rigid[i].index.push_back(l);
+        //                 Linalg::k_rigid[i].element.push_back(STROK_f[l]);
+        //             } 
+        //         }  
+        //     }
 
-    //         Linalg::k_rigid[i].index.clear();
-    //         Linalg::k_rigid[i].element.clear();
-    //         for (int l = 0; l < Linalg::k_rigid.size(); ++l)
-    //         {
-    //             if (STROK_f[l]!=0)
-    //             {
-    //                 Linalg::k_rigid[i].index.push_back(l);
-    //                 Linalg::k_rigid[i].element.push_back(STROK_f[l]);
-    //             } 
-    //         }  
-    //    // }
+        // }
 
-    // }
+        // for (int i = Linalg::k_rigid.size()-1; i > -1; --i)
+        // {   
 
-    // double temp;
-    // for (int i = Linalg::k_rigid.size()-1; i > -1; --i)
-    // {   
+        //     temp = 0;
 
-    //     temp = 0;
+        //     for (int l = 1; l < Linalg::k_rigid[i].index.size(); ++l)
+        //     {   
 
-    //     for (int l = 1; l < Linalg::k_rigid[i].index.size(); ++l)
-    //     {   
+        //         temp += Linalg::k_rigid[i].element[l]*U[Linalg::k_rigid[i].index[l]];
+        //     }
+     
+        //     U[i] = (U[i] - temp);
+        // }
 
-    //         temp += Linalg::k_rigid[i].element[l]*U[Linalg::k_rigid[i].index[l]];
-    //     }
- 
-    //     U[i] = (U[i] - temp);
-    // }
+        // for (int i = 0; i < obj.node.size(); ++i)
+        // {   
+        //     obj.node[i].ux = U[3*i];
+        //     obj.node[i].uy = U[3*i+1];      
+        // } 
 
 ////////////////////////////
 //Exact Linear solver Gauss
 ////////////////////////////
+
